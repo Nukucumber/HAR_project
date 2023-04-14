@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block header %}
+{% endblock %}
+{% block navigation %}
+    {{super()}}
+{% endblock %}
+{% block content %}
+    <table class="filling_0">
+        <thead>
+            <tr>
+                <th>employee id</th>
+                <th>employee name</th>
+                <th>employee surname</th>
+                <th>employee patronymic</th>
+                <th>employee position</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table -%}
+                <tr>
+                    {% for item in row -%}
+                        <td>{{item}}</td>
+                    {% endfor -%}
+                </tr>
+            {% endfor -%}
+        </tbody>
+    </table>
+    {% for msg in get_flashed_messages() -%}
+        <div>{{msg}}</div>
+    {% endfor -%}
+
+    <form action="/Staff?operation=deleteOrUpdate" method="POST" class="action">
+        <p class="filling_input_0 empty">
+            <input class="n_0" type="number" placeholder="employee id" name="employee_id" readonly>
+            <input class="n_1" type="text" placeholder="employee name" name="employee_name">
+            <input class="n_2" type="text" placeholder="employee surname" name="employee_surname">
+            <input class="n_3" type="text" placeholder="employee patronymic" name="employee_patronymic">
+            <input class="n_4" type="text" placeholder="employee position" name="employee_position">
+        </p>
+    <input type="submit" name="delete" value="delete">
+    <input type="submit" name="update" value="update">
+    </form>
+{% endblock %}
+{% block footer %}
+    {{super()}}
+{% endblock %}

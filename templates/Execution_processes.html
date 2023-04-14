@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block header %}
+{% endblock %}
+{% block navigation %}
+    {{super()}}
+{% endblock %}
+{% block content %}
+    <table class="filling_0">
+        <thead>
+            <tr>
+                <th>execution process id</th>
+                <th>type of repair</th>
+                <th>repair cost</th>
+                <th>order execution date</th>
+                <th>message to the client</th>
+                <th>date of product receipt</th>
+                <th>payment amount</th>
+                <th>fk order id</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table_execution -%}
+                <tr>
+                    {% for item in row -%}
+                        <td>{{item}}</td>
+                    {% endfor -%}
+                </tr>
+            {% endfor -%}
+        </tbody>
+    </table>
+    {% for msg in get_flashed_messages() -%}
+        <div>{{msg}}</div>
+    {% endfor -%}
+    <form action="/Execution_processes?operation=deleteOrUpdate" method="POST" class="action">
+        <p class="filling_input_0 empty">
+            <input class="n_0" type="number" placeholder="execution process id" name="execution_process_id" readonly>
+            <input class="n_1" type="text" placeholder="type of repair" name="type_of_repair">
+            <input class="n_2" type="number" placeholder="repair cost" name="repair_cost">
+            <input class="n_3" type="text" placeholder="order execution date" name="order_execution_date">
+            <input class="n_4" type="number" placeholder="message to the client" name="message_to_the_client">
+            <input class="n_5" type="text" placeholder="date of product receipt" name="date_of_product_receipt">
+            <input class="n_6" type="number" placeholder="payment amount" name="payment_amount">
+        </p>
+        <input type="submit" value="delete" name="delete">
+        <input type="submit" value="update" name="update">
+    </form>
+    <form action="/Execution_processes?operation=add" method="POST" class="action">
+        <p>
+            <input type="text" placeholder="type of repair" name="type_of_repair">
+            <input type="number" placeholder="repair cost" name="repair_cost">
+            <input type="text" placeholder="order execution date" name="order_execution_date">
+            <input type="number" placeholder="message to the client" name="message_to_the_client">
+            <input type="text" placeholder="date of product receipt" name="date_of_product_receipt">
+            <input type="number" placeholder="payment amount" name="payment_amount">
+            <table class="upload_0">
+                <thead>
+                    <tr>
+                        <th>order id</th>
+                        <th>client name</th>
+                        <th>client surname</th>
+                        <th>client patronymic</th>
+                        <th>warranty</th>
+                        <th>date of order receipt</th>
+                        <th>client phone number</th>
+                        <th>fk product id</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in table_orders -%}
+                    <tr>
+                        {% for item in row -%}
+                        <td>{{item}}</td>
+                        {% endfor -%}
+                    </tr>
+                    {% endfor -%}
+                </tbody>
+            </table>
+            <p class="upload_input_0" style="display: none;">
+                <input class="n_0" type="number" placeholder="fk order id" name="fk_order_id" required>
+            </p>
+        </p>
+        <input type="submit" value="add" name="add">
+    </form>
+{% endblock %}
+{% block footer %}
+    {{super()}}
+{% endblock %}

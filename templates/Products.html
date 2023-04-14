@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block header %}
+{% endblock %}
+{% block navigation %}
+    {{super()}}
+{% endblock %}
+{% block content %}
+    <table class="filling_0">
+        <thead>
+            <tr>
+                <th>product id</th>
+                <th>product name</th>
+                <th>firm</th>
+                <th>model</th>
+                <th>technical specifications</th>
+                <th>warranty period</th>
+                <th>image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table -%}
+            <tr>
+                {% for item in row -%}
+                <td>{{item}}</td>
+                {% endfor -%}
+            </tr>
+            {% endfor -%}
+        </tbody>
+    </table>
+    {% for msg in get_flashed_messages() -%}
+        <div>{{msg}}</div>
+    {% endfor -%}
+    <form action="/Products?operation=deleteOrUpdate" method="POST" class="action">
+        <p class="filling_input_0 empty">
+            <input class="n_0" type="number" placeholder="product id" name="product_id" readonly>
+            <input class="n_1" type="text" placeholder="product name" name="product_name">
+            <input class="n_2" type="text" placeholder="firm" name="firm">
+            <input class="n_3" type="text" placeholder="model" name="model">
+            <textarea class="n_4" placeholder="technical specifications" name="technical_specifications" rows="5" cols="33"></textarea>
+            <input class="n_5" type="text" placeholder="warranty period" name="warranty_period">
+            <input class="n_6" type="text" placeholder="image" name="image">
+        </p>
+    <input type="submit" name="delete" value="delete">
+    <input type="submit" name="update" value="update">
+    </form>
+    <form action="/Products?operation=add" method="POST" class="action">
+        <p class="group_adding last">
+            <input type="text" placeholder="product name" name="product_name">
+            <input type="text" placeholder="firm" name="firm">
+            <input type="text" placeholder="model" name="model">
+            <textarea placeholder="technical specifications" name="technical_specifications" rows="5" cols="33"></textarea>
+            <input type="text" placeholder="warranty period" name="warranty_period">
+            <input type="text" placeholder="image" name="image">
+        </p>
+        <input type="submit" name="add" value="add">
+    </form>
+
+{% endblock %}
+{% block footer %}
+    {{super()}}
+{% endblock %}

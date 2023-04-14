@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block header %}
+{% endblock %}
+{% block navigation %}
+    {{super()}}
+{% endblock %}
+{% block content %}
+    <table>
+        <thead>
+            <tr>
+                <th>staff id</th>
+                <th>order id</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table -%}
+                <tr>
+                    {% for item in row -%}
+                        <td>{{item}}</td>
+                    {% endfor -%}
+                </tr>
+            {% endfor -%}
+        </tbody>
+    </table>
+    {% for msg in get_flashed_messages() -%}
+        <div>{{msg}}</div>
+    {% endfor -%}
+{% endblock %}
+{% block footer %}
+{% endblock %}
