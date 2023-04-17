@@ -5,6 +5,11 @@
     {{super()}}
 {% endblock %}
 {% block content %}
+    <div class="message">
+        {% for msg in get_flashed_messages() -%}
+            {{msg}}
+        {% endfor -%}
+    </div>
     <table class="filling_0">
         <thead>
             <tr>
@@ -28,18 +33,14 @@
             {% endfor -%}
         </tbody>
     </table>
-        
-    {% for msg in get_flashed_messages() -%}
-        <div>{{msg}}</div>
-    {% endfor -%}
     <form action="Orders?operation=deleteOrUpdate" method="POST" class="action">
-        <p class="filling_input_0 empty">
+        <p class="filling_input_0 last">
             <input class="n_0" type="number" placeholder="order id" name="order_id" readonly>
             <input class="n_1" type="text" placeholder="client name" name="client_name">
             <input class="n_2" type="text" placeholder="client surname" name="client_surname">
             <input class="n_3" type="text" placeholder="client patronymic" name="client_patronymic">
-            <input class="n_4" type="number" placeholder="warranty" name="warranty">
-            <input class="n_5" type="text" placeholder="date of order receipt" name="date_of_order_receipt">
+            <input class="n_4" type="number" placeholder="warranty" name="warranty" readonly>
+            <label>date of order receipt:</label><input class="n_5" type="date" placeholder="date of order receipt" name="date_of_order_receipt" readonly>
             <input class="n_6" type="number" placeholder="client phone number" name="client_phone_number">
         </p>
         <input type="submit" value="delete" name="delete">
@@ -49,12 +50,12 @@
         <input class="n_1" type="text" placeholder="client name" name="client_name">
         <input class="n_2" type="text" placeholder="client surname" name="client_surname">
         <input class="n_3" type="text" placeholder="client patronymic" name="client_patronymic">
-        <input class="n_4" type="number" placeholder="warranty" name="warranty">
-        <input class="n_5" type="text" placeholder="date of order receipt" name="date_of_order_receipt">
+        <input class="n_4" type="number" placeholder="warranty" name="warranty" style="display: none;">
+        <label>date of order receipt:</label><input class="n_5" type="date" placeholder="date of order receipt" name="date_of_order_receipt">
         <input class="n_6" type="number" placeholder="client phone number" name="client_phone_number">
-        <table class="upload_0">
+        <table class="upload_0 product">
             <thead>
-                <tr>
+                <tr class="fk_id">
                     <th>product id</th>
                     <th>product name</th>
                     <th>firm</th>
@@ -75,7 +76,7 @@
             </tbody>
         </table>
         <p class="upload_input_0" style="display: none;">
-            <input class="n_0" value="" type="number" placeholder="product id" name="fk_product_id" required>
+            <input class="n_0" value="" type="number" placeholder="product id" name="fk_product_id">
         </p>
         <p class="group_adding last">
             <input class="n_1" type="text" placeholder="employee name" name="new_employee_name">
@@ -85,7 +86,7 @@
         </p>
         <table class="filling_1">
             <thead>
-                <tr>
+                <tr class="staff_table">
                     <th>employee id</th>
                     <th>employee name</th>
                     <th>employee surname</th>
@@ -103,20 +104,19 @@
                 {% endfor -%}
             </tbody>
         </table>
-        {% for msg in get_flashed_messages() -%}
-            <div>{{msg}}</div>
-        {% endfor -%}
-    
-        <p class="filling_input_1 empty">
-            <input class="n_0" type="number" placeholder="employee id" name="employee_id">
-            <input class="n_1" type="text" placeholder="employee name" name="employee_name">
-            <input class="n_2" type="text" placeholder="employee surname" name="employee_surname">
-            <input class="n_3" type="text" placeholder="employee patronymic" name="employee_patronymic">
-            <input class="n_4" type="text" placeholder="employee position" name="employee_position">
-        </p>
+        <div style="display: none;">
+            <p class="filling_input_1 last">
+                <input class="n_0" type="number" placeholder="employee id" name="employee_id">
+                <input class="n_1" type="text" placeholder="employee name" name="employee_name">
+                <input class="n_2" type="text" placeholder="employee surname" name="employee_surname">
+                <input class="n_3" type="text" placeholder="employee patronymic" name="employee_patronymic">
+                <input class="n_4" type="text" placeholder="employee position" name="employee_position">
+            </p>
+        </div>
         <input type="submit" name="add" value="add">
     </form>
 {% endblock %}
 {% block footer %}
     {{super()}}
+    <script type="module" src="{{ url_for('static', filename='js/Order_validation.js')}}"></script>
 {% endblock %}

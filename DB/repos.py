@@ -1,4 +1,5 @@
 import sqlite3, uuid
+from datetime import date
 
 
 def Products_showAll():
@@ -70,6 +71,18 @@ def Products_update(data):
     con.close()
     return "succesfully update"
 
+def Products_warranty_delete(product_id):
+    con = sqlite3.connect("DB/HAR_DB.db")
+    c = con.cursor()
+
+    c.execute("""UPDATE Products SET warranty_period = ""
+        WHERE product_id = """ + product_id + """
+    """)
+    con.commit()
+    c.close()
+    con.close()
+    return
+
 
 
 def Staff_showAll():
@@ -135,9 +148,6 @@ def Orders_showAll_for_execution():
     return allOrders
 
 def Orders_add(data):
-
-    if "employee_id_0" not in data and data["new_employee_name_0"] == "":
-        return "add or choise one employee"
 
     con = sqlite3.connect("DB/HAR_DB.db")
     c = con.cursor()
@@ -234,12 +244,18 @@ def Orders_update(data):
 
 
 
-def Execution_processes_showAll():
+def Execution_processes_showAll(product_id):
     con = sqlite3.connect("DB/HAR_DB.db")
     c = con.cursor()
-    allExecution_processes = c.execute("SELECT * FROM Execution_processes").fetchall()
+    if product_id == "":
+        allExecution_processes = ""
+        # allExecution_processes = c.execute("SELECT * FROM Execution_processes").fetchall()
+    else:
+        allExecution_processes = c.execute("SELECT * FROM Execution_processes WHERE fk_order_id IN (SELECT order_id FROM orders WHERE fk_product_id = " + product_id + ");").fetchall()
     c.close()
     con.close()
+    if allExecution_processes == []:
+        allExecution_processes = ""
     return allExecution_processes
 
 def Execution_processes_add(data):
@@ -282,66 +298,56 @@ def Execution_processes_update(data):
     i = 0
     while("execution_process_id_" + str(i) in data):
         c.execute("""UPDATE Execution_processes SET
-            type_of_repair = '""" + data['type_of_repair_' + str(i)] + """', 
-            repair_cost = '""" + data['repair_cost_' + str(i)] + """', 
-            order_execution_date = '""" + data['order_execution_date_' + str(i)] + """', 
-            message_to_the_client = '""" + data["message_to_the_client_" + str(i)] + """', 
-            date_of_product_receipt = '""" + data['date_of_product_receipt_' + str(i)] + """',
-            payment_amount = '""" + data["payment_amount_" + str(i)] + """'
+            type_of_repair = '""" + data["type_of_repair_" + str(i)] + """',
+            repair_cost = """ + data["repair_cost_" + str(i)] + """,
+            message_to_the_client = '""" + data["message_to_the_client_" + str(i)] + """'
             WHERE execution_process_id = """ + data["execution_process_id_" + str(i)] + """
         """)
         i += 1
+
+    save_warranty = True
+
+    if data["date_of_product_receipt"] != "":
+        
+        second_date = data["date_of_product_receipt"]
+        second_date = second_date.split('-')
+        second_date = date(int(second_date[0]), int(second_date[1]), int(second_date[2]))
+
+        allExecute = c.execute("SELECT * FROM Execution_processes WHERE fk_order_id IN (SELECT order_id FROM Orders WHERE fk_product_id = " + data["product_id"] + ");").fetchall()
+
+        for item in allExecute:
+            first_date = item[3]
+            first_date = first_date.split('-')
+            first_date = date(int(first_date[0]), int(first_date[1]), int(first_date[2]))
+            diff_date = second_date - first_date
+            if diff_date.days - 30 > 0:
+                save_warranty = False
+                payment_amount = float(item[2]) + float(item[2]) * 0.05 * (diff_date.days - 30)
+            else:
+                payment_amount = item[2]
+
+            c.execute("UPDATE Execution_processes SET payment_amount = " + str(payment_amount) + " WHERE execution_process_id = " + str(item[0]) + ";")    
+
+        c.execute("""UPDATE Execution_processes SET date_of_product_receipt = '""" + data['date_of_product_receipt'] + """' WHERE fk_order_id IN 
+            (SELECT order_id FROM Orders WHERE fk_product_id = """ + data["product_id"] + """);
+        """)
+
+
     con.commit()
     c.close()
     con.close()
-    return "succesfully added"
+
+    if save_warranty == False:
+        Products_warranty_delete(data["product_id"])
+    
+    return "succesfully update"
 
 
 
-def staff_id_orders_id_showAll(): #debug display
-    con = sqlite3.connect("DB/HAR_DB.db")
-    c = con.cursor()
-    allstaff_id_orders_id = c.execute("SELECT * FROM staff_id_orders_id").fetchall()
-    c.close()
-    con.close()
-    return allstaff_id_orders_id
-
-# def staff_id_orders_id_delete(data):    
-#     if ("employee_id" in data):
-#         field_id = "employee_id"
-#         id = data["employee_id"]
-#         second_field_id = "order_id"
-#     else:
-#         field_id = "order_id"
-#         id = data["order_id"]
-#         second_field_id = "employee_id"
-
+# def staff_id_orders_id_showAll(): #debug display
 #     con = sqlite3.connect("DB/HAR_DB.db")
 #     c = con.cursor()
-    
-#     second_id = c.execute("SELECT " + second_field_id + " FROM staff_id_orders_id WHERE " + field_id + " = " + id + ";").fetchall()
-
-#     dif = c.execute("SELECT " + second_field_id + " FROM staff_id_orders_id WHERE " + field_id + " != " + id + ";").fetchall()
-
-#     for item in dif:
-#         if item in second_id:
-#             second_id.remove(item)
-
-#     c.execute("DELETE FROM staff_id_orders_id WHERE " + field_id + " = " + id + ";")
-
-#     con.commit()
+#     allstaff_id_orders_id = c.execute("SELECT * FROM staff_id_orders_id").fetchall()
 #     c.close()
 #     con.close()
-#     if (second_field_id == "order_id"):
-#         i = 0
-#         for item in second_id:
-#             data["order_id_" + str(i)] = str(item[0])
-#             i += 1
-#         Orders_delete(data)
-#     else:
-#         i = 0
-#         for item in second_id:
-#             data["employee_id_" + str(i)] = str(item[0])
-#             i += 1
-#         Staff_delete(data)
-#     return second_id
+#     return allstaff_id_orders_id

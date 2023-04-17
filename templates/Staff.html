@@ -5,6 +5,11 @@
     {{super()}}
 {% endblock %}
 {% block content %}
+    <div class="message">
+        {% for msg in get_flashed_messages() -%}
+            {{msg}}
+        {% endfor -%}
+    </div>
     <table class="filling_0">
         <thead>
             <tr>
@@ -25,12 +30,9 @@
             {% endfor -%}
         </tbody>
     </table>
-    {% for msg in get_flashed_messages() -%}
-        <div>{{msg}}</div>
-    {% endfor -%}
 
     <form action="/Staff?operation=deleteOrUpdate" method="POST" class="action">
-        <p class="filling_input_0 empty">
+        <p class="filling_input_0 last">
             <input class="n_0" type="number" placeholder="employee id" name="employee_id" readonly>
             <input class="n_1" type="text" placeholder="employee name" name="employee_name">
             <input class="n_2" type="text" placeholder="employee surname" name="employee_surname">
@@ -43,4 +45,5 @@
 {% endblock %}
 {% block footer %}
     {{super()}}
+    <script type="module" src="{{ url_for('static', filename='js/Staff_validation.js')}}"></script>
 {% endblock %}

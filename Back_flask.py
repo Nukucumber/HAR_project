@@ -7,9 +7,9 @@ username = "tolik"
 psw = "qwert"
 
 
-@app.route("/")
+@app.route("/", methods = ["POST", "GET"])
 def index():
-
+    
     return render_template("index.html", title = "Main")
 
 
@@ -58,6 +58,8 @@ def Orders():
 @app.route("/Execution_processes", methods = ["POST", "GET"])
 def Execution_processes():
     if request.method == "POST":
+        if request.args.get("operation") == "show":
+            session["product_id"] = request.form.to_dict()["product_id"]
         if request.args.get("operation") == "add":
             flash(repos.Execution_processes_add(request.form.to_dict()))
         if request.args.get("operation") == "deleteOrUpdate":
@@ -66,13 +68,11 @@ def Execution_processes():
             if "update" in request.form:
                 flash(repos.Execution_processes_update(request.form.to_dict()))
         return redirect(url_for("Execution_processes"))
-    return render_template("Execution_processes.html", title = "Execution_processes", table_execution = repos.Execution_processes_showAll(), table_orders = repos.Orders_showAll_for_execution())
-    
+    if "product_id" in session:
+        return render_template("Execution_processes.html", title = "Execution_processes", product_id = session["product_id"], table_execution = repos.Execution_processes_showAll(session["product_id"]), table_orders = repos.Orders_showAll_for_execution(), table_products = repos.Products_showAll())
+    else:
+        return render_template("Execution_processes.html", title = "Execution_processes", table_execution = repos.Execution_processes_showAll(""), table_orders = repos.Orders_showAll_for_execution(), table_products = repos.Products_showAll())
 
-@app.route("/staff_id_orders_id", methods = ["POST", "GET"])
-def staff_id_orders_id():
-
-    return render_template("staff_id_orders_id.html", table = repos.staff_id_orders_id_showAll())
 
 
 if __name__ == "__main__":

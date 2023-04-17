@@ -5,6 +5,11 @@
     {{super()}}
 {% endblock %}
 {% block content %}
+    <div class="message">
+        {% for msg in get_flashed_messages() -%}
+            {{msg}}
+        {% endfor -%}
+    </div>
     <table class="filling_0">
         <thead>
             <tr>
@@ -27,17 +32,18 @@
             {% endfor -%}
         </tbody>
     </table>
-    {% for msg in get_flashed_messages() -%}
-        <div>{{msg}}</div>
-    {% endfor -%}
     <form action="/Products?operation=deleteOrUpdate" method="POST" class="action">
-        <p class="filling_input_0 empty">
+        <p class="filling_input_0 last">
             <input class="n_0" type="number" placeholder="product id" name="product_id" readonly>
             <input class="n_1" type="text" placeholder="product name" name="product_name">
-            <input class="n_2" type="text" placeholder="firm" name="firm">
+            <select class="n_2" name="firm" title="firm">
+                <option>Philips</option>
+                <option>Brown</option>
+                <option>Bosh</option>
+            </select>
             <input class="n_3" type="text" placeholder="model" name="model">
             <textarea class="n_4" placeholder="technical specifications" name="technical_specifications" rows="5" cols="33"></textarea>
-            <input class="n_5" type="text" placeholder="warranty period" name="warranty_period">
+            <label for="warranty_period">warranty period:</label><input class="n_5" type="date" placeholder="warranty period" name="warranty_period">
             <input class="n_6" type="text" placeholder="image" name="image">
         </p>
     <input type="submit" name="delete" value="delete">
@@ -46,10 +52,16 @@
     <form action="/Products?operation=add" method="POST" class="action">
         <p class="group_adding last">
             <input type="text" placeholder="product name" name="product_name">
-            <input type="text" placeholder="firm" name="firm">
+            <!-- <input type="text" placeholder="firm" name="firm"> -->
+            <select name="firm" title="firm">
+                <option>Philips</option>
+                <option>Brown</option>
+                <option>Bosh</option>
+            </select>
             <input type="text" placeholder="model" name="model">
             <textarea placeholder="technical specifications" name="technical_specifications" rows="5" cols="33"></textarea>
-            <input type="text" placeholder="warranty period" name="warranty_period">
+            <label>warranty period:</label>
+            <input type="date" placeholder="warranty period" name="warranty_period">
             <input type="text" placeholder="image" name="image">
         </p>
         <input type="submit" name="add" value="add">
@@ -58,4 +70,5 @@
 {% endblock %}
 {% block footer %}
     {{super()}}
+    <script type="module" src="{{ url_for('static', filename='js/Products_validation.js')}}"></script>
 {% endblock %}

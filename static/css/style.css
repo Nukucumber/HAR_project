@@ -16,3 +16,27 @@ table tbody tr:hover{
 .action{
     border:rgb(106, 106, 107) solid thick;
 }
+
+.selected{
+    border:rgb(0, 0, 209) solid thick;
+}
+
+.message{
+    background-color: rgb(106, 106, 107);
+    font-size: large;
+    color: rgb(236, 236, 236);
+    text-align: center;
+    margin: auto;
+    width: 45%;
+    border-radius: 6px;
+}
+
+.wrongInput{
+    background-color: rgb(106, 106, 107);
+    color: white;
+    border-radius: 6px;
+}
+
+img{
+    width: 100%;
+}
