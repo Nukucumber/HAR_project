@@ -53,7 +53,7 @@ function validation(form){
             }
         }
 
-        if (input[input_index].name.indexOf("date_of_order_receipt") > -1) {
+        if (/^date_of_order_receipt$/.test(input[input_index].name) == true) {
             if (isCorrectDate(input[input_index].value) == false) {
                 input[input_index].classList.add("wrongInput")
                 document.querySelector(".message").innerHTML = "Incorrect format of the date of order receipt field"

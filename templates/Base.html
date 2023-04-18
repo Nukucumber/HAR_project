@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
         <title>{{title}}</title>
@@ -10,10 +10,11 @@
         {% block navigation -%}
             <ul>
                 <li><a href="{{url_for('Products')}}">Products</a></li>
-                <li><a href="{{url_for('index')}}">Main</a></li>
                 <li><a href="{{url_for('Staff')}}">Staff</a></li>
+                <li><a href="{{url_for('index')}}">Main report</a></li>
                 <li><a href="{{url_for('Orders')}}">Orders</a></li>
                 <li><a href="{{url_for('Execution_processes')}}">Execution processes</a></li>
+                <li><a href="{{url_for('staff_id_orders_id')}}">staff_id orders_id.html</a></li>
             </ul>
         {% endblock -%}
         {% block content -%}

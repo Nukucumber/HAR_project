@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block header %}
+{% endblock %}
+{% block navigation %}
+    {{super()}}
+{% endblock %}
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>employee id</th>
+                <th>order id</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table -%}
+                <tr>
+                    {% for item in row -%}
+                        <td>{{item}}</td>
+                    {% endfor -%}
+                </tr>
+            {% endfor -%}
+        </tbody>
+    </table>
+{% endblock %}
+{% block footer %}
+{% endblock %}

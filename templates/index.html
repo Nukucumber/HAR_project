@@ -5,7 +5,67 @@
     {{super()}}
 {% endblock %}
 {% block content %}
-    
+    <div class="message">
+        {% for msg in get_flashed_messages() -%}
+            {{msg}}
+        {% endfor -%}
+    </div>
+    <form action="/" method="POST">
+       <p>
+            Information about completed orders for
+            warranty repair of household appliances for <input type="month" name="date">
+       </p>
+       <input type="submit" value="search">
+    </form>
+    {% if table != [] -%}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>order id</th>
+                    <th>client name</th>
+                    <th>client surname</th>
+                    <th>client patronymic</th>
+                    <th>client phone number</th>
+                    <th>date of order receipt</th>
+                    <th>order execution date</th>
+                    <th>repair period (days)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table -%}
+                    {% if row|length == 4 -%}
+                        {% for item in row -%}
+                            <tr>
+                                {% if loop.index == 1 -%}
+                                    <td colspan="8"><b>Product name:</b> {{item}}</td>
+                                {% endif-%}
+
+                                {% if loop.index == 2 -%}
+                                    <td colspan="8"><b>Firm:</b> {{item}}</td>
+                                {% endif-%}
+
+                                {% if loop.index == 3 -%}
+                                    <td colspan="8"><b>Model:</b> {{item}}</td>
+                                {% endif-%}
+
+                                {% if loop.index == 4 -%}
+                                    <td colspan="8"><b>Total orders by model:</b> {{item}}</td>
+                                {% endif-%}
+                            </tr>
+                        {% endfor -%}
+                    {% endif -%}
+                    {% if row|length > 4 -%}
+                    <tr>
+                        {% for item in row -%}
+                            <td>{{item}}</td>
+                        {% endfor -%}
+                    </tr>
+                    {% endif -%}
+                {% endfor -%}
+            </tbody>
+        </table>
+    {% endif -%}
 {% endblock %}
 {% block footer %}
+    <script type="module" src="{{ url_for('static', filename='js/Creat_search_table.js')}}"></script>
 {% endblock %}

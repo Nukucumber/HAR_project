@@ -1,5 +1,5 @@
 function validation(form){
-    var input = form.querySelectorAll(".wrongInput")
+    var input = form.querySelectorAll("input")
     for (let input_index = 0; input_index < input.length; input_index++) {
         input[input_index].classList.remove("wrongInput")        
     }

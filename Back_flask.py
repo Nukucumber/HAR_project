@@ -9,9 +9,15 @@ psw = "qwert"
 
 @app.route("/", methods = ["POST", "GET"])
 def index():
-    
-    return render_template("index.html", title = "Main")
+    if request.method == "POST":
+        session["date"] = request.form.to_dict()
+        return redirect(url_for("index"))
 
+    if "date" in session:
+        return render_template("index.html", title = "Main", table = repos.search_task(session["date"]))
+    else:
+        return render_template("index.html", title = "Main", table = "")
+    
 
 @app.route("/Products", methods = ["POST", "GET"])
 def Products():
@@ -69,11 +75,14 @@ def Execution_processes():
                 flash(repos.Execution_processes_update(request.form.to_dict()))
         return redirect(url_for("Execution_processes"))
     if "product_id" in session:
-        return render_template("Execution_processes.html", title = "Execution_processes", product_id = session["product_id"], table_execution = repos.Execution_processes_showAll(session["product_id"]), table_orders = repos.Orders_showAll_for_execution(), table_products = repos.Products_showAll())
+        return render_template("Execution_processes.html", title = "Execution_processes", product_id = session["product_id"], table_execution = repos.Execution_processes_showAll(session["product_id"]), table_orders = repos.Orders_showAll_for_execution(), table_products = repos.Products_showAll_for_execution())
     else:
-        return render_template("Execution_processes.html", title = "Execution_processes", table_execution = repos.Execution_processes_showAll(""), table_orders = repos.Orders_showAll_for_execution(), table_products = repos.Products_showAll())
+        return render_template("Execution_processes.html", title = "Execution_processes", table_execution = repos.Execution_processes_showAll(""), table_orders = repos.Orders_showAll_for_execution(), table_products = repos.Products_showAll_for_execution())
+    
+@app.route("/staff_id_orders_id")
+def staff_id_orders_id():
 
-
+    return render_template("staff_id_orders_id.html", title = "staff_id_orders_id", table = repos.staff_id_orders_id_showAll())
 
 if __name__ == "__main__":
     app.run(debug=True)

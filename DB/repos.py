@@ -10,6 +10,14 @@ def Products_showAll():
     con.close()
     return allProducts
 
+def Products_showAll_for_execution():
+    con = sqlite3.connect("DB/HAR_DB.db")
+    c = con.cursor()
+    allProducts = c.execute("SELECT * FROM Products WHERE product_id IN (SELECT fk_product_id FROM Orders WHERE order_id IN (SELECT fk_order_id FROM Execution_processes));").fetchall()
+    c.close()
+    con.close()
+    return allProducts
+
 def Products_add(data):
     con = sqlite3.connect("DB/HAR_DB.db")
     c = con.cursor()
@@ -300,7 +308,8 @@ def Execution_processes_update(data):
         c.execute("""UPDATE Execution_processes SET
             type_of_repair = '""" + data["type_of_repair_" + str(i)] + """',
             repair_cost = """ + data["repair_cost_" + str(i)] + """,
-            message_to_the_client = '""" + data["message_to_the_client_" + str(i)] + """'
+            message_to_the_client = '""" + data["message_to_the_client_" + str(i)] + """',
+            order_execution_date = '""" + data["order_execution_date_" + str(i)] + """'
             WHERE execution_process_id = """ + data["execution_process_id_" + str(i)] + """
         """)
         i += 1
@@ -342,12 +351,68 @@ def Execution_processes_update(data):
     
     return "succesfully update"
 
+def search_task(data):
+    con = sqlite3.connect("DB/HAR_DB.db")
+    c = con.cursor()
+
+    date_array = c.execute("SELECT order_execution_date FROM Execution_processes").fetchall()
+    date_array_res = [] 
+    for item in date_array:
+        item = item[0].split('-')
+        order_date = item[0] + "-" + item[1]
+        if order_date == data["date"]:
+            date_array_res.append(item[0] + "-" + item[1] + "-" + item[2])
+
+    date_array_res = list(set(date_array_res))
+
+    res = []
+    product_res = []
+    for item in date_array_res:
+        product = (c.execute("""SELECT product_name, firm, model, product_id FROM Products 
+        WHERE product_id IN (SELECT fk_product_id FROM Orders 
+        WHERE order_id IN (SELECT fk_order_id FROM Execution_processes
+        WHERE order_execution_date = '""" + str(item) + """'))""").fetchall())
+        for i in product:
+            product_res.append(i)
+
+    product_res = list(set(product_res))
+    
+    for item in product_res:
+        lst = list(item)
+        product_set = []
+        for i in date_array_res:
+
+            order = c.execute("""SELECT order_id, client_name, client_surname, client_patronymic, client_phone_number,
+            date_of_order_receipt, client_name, client_name FROM Orders WHERE fk_product_id = """ + str(lst[3]) + """ 
+            AND order_id IN (SELECT fk_order_id FROM Execution_processes
+            WHERE order_execution_date = '""" + str(i) + """') AND warranty = 1""").fetchall()
+            if order != []:
+                if item not in product_set:
+                    product_set.append(tuple(item))
+                    pre_res = []
+
+                    for k in lst:
+                        pre_res.append(k)
+
+                    pre_res[3] = c.execute("""SELECT COUNT(order_id) FROM Orders WHERE fk_product_id IN 
+                    (SELECT product_id FROM Products WHERE model = '""" + lst[2] + """')""").fetchall()[0][0]
+                    
+                    res.append(tuple(pre_res))
+                for j in order:
+                    order_lst = list(j)
+                    order_lst[6] = i
+                    order_lst[7] = (date(int(order_lst[6].split('-')[0]), int(order_lst[6].split('-')[1]), int(order_lst[6].split('-')[2])) - date(int(order_lst[5].split('-')[0]), int(order_lst[5].split('-')[1]), int(order_lst[5].split('-')[2]))).days
+                    res.append(tuple(order_lst))
 
 
-# def staff_id_orders_id_showAll(): #debug display
-#     con = sqlite3.connect("DB/HAR_DB.db")
-#     c = con.cursor()
-#     allstaff_id_orders_id = c.execute("SELECT * FROM staff_id_orders_id").fetchall()
-#     c.close()
-#     con.close()
-#     return allstaff_id_orders_id
+    c.close()
+    con.close()
+    return res
+
+def staff_id_orders_id_showAll():
+    con = sqlite3.connect("DB/HAR_DB.db")
+    c = con.cursor()
+    staff_id_orders_id = c.execute("SELECT * FROM staff_id_orders_id").fetchall()
+    c.close()
+    con.close()
+    return staff_id_orders_id
