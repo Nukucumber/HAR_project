@@ -62,7 +62,7 @@ function validation(form){
             else{
                 var td = document.querySelector(".product").querySelector(".active").querySelectorAll("td")
 
-                if (td[5].innerHTML == "" || DateDiff(input[input_index].value, td[5].innerHTML) < 0) { //перенести в репозиторий бд!!!!!!!!!!!
+                if (td[5].innerHTML == "" || DateDiff(input[input_index].value, td[5].innerHTML) < 0) {
                    form.querySelector(".n_4").value = "0"
                 }
                 else {

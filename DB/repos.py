@@ -183,27 +183,21 @@ def Orders_add(data):
                 '""" + data['new_employee_patronymic_' + str(i)] + """', 
                 '""" + data['new_employee_position_' + str(i)] + """')
             """)
-            i += 1
-
-        i = 0
-
-        while("new_employee_id_" + str(i) in data):
             c.execute("""INSERT INTO staff_id_orders_id VALUES(
                 """ + data["new_employee_id_" + str(i)] + """,
                 """ + data["order_id"] + """
                 )
             """)
             i += 1
-
-    i = 0
-
-    while("employee_id_" + str(i) in data):
-        c.execute("""INSERT INTO staff_id_orders_id VALUES(
-            """ + data["employee_id_" + str(i)] + """,
-            """ + data["order_id"] + """
-            )
-        """)
-        i += 1
+    if data["employee_name_0"] != "":
+        i = 0
+        while("employee_id_" + str(i) in data):
+            c.execute("""INSERT INTO staff_id_orders_id VALUES(
+                """ + data["employee_id_" + str(i)] + """,
+                """ + data["order_id"] + """
+                )
+            """)
+            i += 1
 
     con.commit()
     c.close()
