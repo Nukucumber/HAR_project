@@ -10,7 +10,7 @@
             {{msg}}
         {% endfor -%}
     </div>
-    <form action="/" method="POST">
+    <form action="/?operation=search" method="POST">
        <p>
             Information about completed orders for
             warranty repair of household appliances for <input type="month" name="date">
@@ -67,5 +67,7 @@
     {% endif -%}
 {% endblock %}
 {% block footer %}
-    <script type="module" src="{{ url_for('static', filename='js/Creat_search_table.js')}}"></script>
+    <form action="/?operation=logout" method="POST">
+        <input type="submit" value="logout">
+    </form>
 {% endblock %}

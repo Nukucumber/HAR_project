@@ -3,15 +3,36 @@ import DB.repos as repos, uuid
 
 app = Flask(__name__)
 app.secret_key = str(uuid.uuid4().fields[-1])
-username = "tolik"
-psw = "qwert"
+
+
+@app.route("/login", methods = {"POST", "GET"})
+def login():
+    if "Logged" in session:
+        return redirect(url_for("index"))
+    if request.method == "POST":
+        if repos.checkLogin(request.form.to_dict()["Nickname"], request.form.to_dict()["psw"]) == False:
+            flash("Wrong password or nickname")
+        else:
+            session["Logged"] = True
+        return redirect(url_for("index"))
+        
+    return render_template("login.html")
+
 
 
 @app.route("/", methods = ["POST", "GET"])
 def index():
+    if "Logged" not in session:
+        return redirect(url_for("login"))
+    
     if request.method == "POST":
-        session["date"] = request.form.to_dict()
-        return redirect(url_for("index"))
+        if request.args.get("operation") == "search":
+            session["date"] = request.form.to_dict()
+            return redirect(url_for("index"))
+        if request.args.get("operation") == "logout":
+            session.pop("Logged")
+            return redirect(url_for("login"))
+
 
     if "date" in session:
         return render_template("index.html", title = "Main", table = repos.search_task(session["date"]))
@@ -21,6 +42,9 @@ def index():
 
 @app.route("/Products", methods = ["POST", "GET"])
 def Products():
+    if "Logged" not in session:
+        return redirect(url_for("login"))
+    
     if request.method == "POST":
         if request.args.get("operation") == "add":
             flash(repos.Products_add(request.form.to_dict()))
@@ -36,6 +60,9 @@ def Products():
 
 @app.route("/Staff", methods = ["POST", "GET"])
 def Staff():
+    if "Logged" not in session:
+        return redirect(url_for("login"))
+
     if request.method == "POST":
         if "delete" in request.form:
             flash(repos.Staff_delete(request.form.to_dict()))
@@ -48,6 +75,8 @@ def Staff():
 
 @app.route("/Orders", methods = ["POST", "GET"])
 def Orders():
+    if "Logged" not in session:
+        return redirect(url_for("login"))
     if request.method == "POST":
         if request.args.get("operation") == "add":
             flash(repos.Orders_add(request.form.to_dict()))
@@ -60,9 +89,11 @@ def Orders():
 
     return render_template("Orders.html", title = "Orders", table_orders = repos.Orders_showAll(), table_products = repos.Products_showAll(), table_staff = repos.Staff_showAll())
 
-
 @app.route("/Execution_processes", methods = ["POST", "GET"])
 def Execution_processes():
+    if "Logged" not in session:
+        return redirect(url_for("login"))
+
     if request.method == "POST":
         if request.args.get("operation") == "show":
             session["product_id"] = request.form.to_dict()["product_id"]
@@ -81,7 +112,9 @@ def Execution_processes():
     
 @app.route("/staff_id_orders_id")
 def staff_id_orders_id():
-
+    if "Logged" not in session:
+        return redirect(url_for("login"))
+    
     return render_template("staff_id_orders_id.html", title = "staff_id_orders_id", table = repos.staff_id_orders_id_showAll())
 
 if __name__ == "__main__":
