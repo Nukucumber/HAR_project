@@ -417,14 +417,6 @@ def checkLogin(Nickname, psw):
     dataUsers = c.execute("SELECT * FROM Users").fetchall()[0]
     c.close()
     con.close()
-    print(dataUsers)
     if list(dataUsers)[1] != Nickname or check_password_hash(list(dataUsers)[2], psw) == False:
         return False
     return True
-# con = sqlite3.connect("DB/HAR_DB.db")
-# c = con.cursor()
-# print(generate_password_hash('tolik_psw'))
-# c.execute("""INSERT INTO Users VALUES(""" + str(uuid.uuid4().fields[-1]) +""", 'tolik_power', '""" + generate_password_hash("tolik_psw") + """')""")
-# con.commit()
-# c.close()
-# con.close()

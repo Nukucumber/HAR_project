@@ -1,19 +1,22 @@
 {% extends "base.html" %}
 {% block header %}
+    {{super()}}
 {% endblock %}
 {% block navigation %}
 {% endblock %}
 {% block content %}
-    <div class="message">
-        {% for msg in get_flashed_messages() -%}
-            {{msg}}
-        {% endfor -%}
-    </div>  
-    <form action="/login" method="POST">
-        <p><label>Nickname: <input type="text" name="Nickname"></label></p>
-        <p><label>Password<input type="password" name="psw"></label></p>
-        <input type="submit" value="login">
-    </form>
+    <div class="login_content">
+        <div class="message">
+            {% for msg in get_flashed_messages() -%}
+                {{msg}}
+            {% endfor -%}
+        </div> 
+        <form action="/login" method="POST">
+            <p><label>Nickname <input type="text" name="Nickname"></label></p>
+            <p><label>Password <input type="password" name="psw"></label></p>
+            <input type="submit" value="login" class="submit">
+        </form>
+    </div>
 {% endblock %}
 {% block footer %}
 {% endblock %}

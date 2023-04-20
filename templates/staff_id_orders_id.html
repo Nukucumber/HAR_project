@@ -1,27 +1,31 @@
 {% extends "base.html" %}
 {% block header %}
+    {{super()}}
 {% endblock %}
 {% block navigation %}
     {{super()}}
 {% endblock %}
 {% block content %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>employee id</th>
-                <th>order id</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in table -%}
+    <div class="information_content">
+        <table class="table">
+            <thead>
                 <tr>
-                    {% for item in row -%}
-                        <td>{{item}}</td>
-                    {% endfor -%}
+                    <th>employee id</th>
+                    <th>order id</th>
                 </tr>
-            {% endfor -%}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for row in table -%}
+                    <tr>
+                        {% for item in row -%}
+                            <td>{{item}}</td>
+                        {% endfor -%}
+                    </tr>
+                {% endfor -%}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
 {% block footer %}
+    {{super()}}
 {% endblock %}

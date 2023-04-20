@@ -1,144 +1,155 @@
 {% extends "base.html" %}
 {% block header %}
+    {{super()}}
 {% endblock %}
 {% block navigation %}
     {{super()}}
 {% endblock %}
 {% block content %}
-    <div class="message">
-        {% for msg in get_flashed_messages() -%}
-            {{msg}}
-        {% endfor -%}
-    </div>
-    <table class="upload_0">
-        <thead>
-            <tr>
-                <th>product id</th>
-                <th>product name</th>
-                <th>firm</th>
-                <th>model</th>
-                <th>technical specifications</th>
-                <th>warranty period</th>
-                <th>image</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in table_products -%}
-            <tr>
-                {% for item in row -%}
-                <td>{{item}}</td>
-                {% endfor -%}
-            </tr>
+    <div class="information_content">
+        <div class="message">
+            {% for msg in get_flashed_messages() -%}
+                {{msg}}
             {% endfor -%}
-        </tbody>
-    </table>
-    <form action="/Execution_processes?operation=show" method="POST">
-        <p class="upload_input_0" style="display: none;">
-            <input class="n_0" type="number" placeholder="product id" name="product_id" readonly>
-        </p>
-        <button type="submit" name="show">show execution processes</button>
-    </form>
-    {% if table_execution != "" -%}
-        <table class="filling_0 execution_process">
+        </div>
+        <table class="upload_0">
             <thead>
                 <tr>
-                    <th>execution process id</th>
-                    <th>type of repair</th>
-                    <th>repair cost</th>
-                    <th>order execution date</th>
-                    <th>message to the client</th>
-                    <th>date of product receipt</th>
-                    <th>payment amount</th>
-                    <th>fk order id</th>
+                    <th>product id</th>
+                    <th>product name</th>
+                    <th>firm</th>
+                    <th>model</th>
+                    <th>technical specifications</th>
+                    <th>warranty period</th>
+                    <th>image</th>
                 </tr>
             </thead>
             <tbody>
-                {% for row in table_execution -%}
-                    <tr>
-                        {% for item in row -%}
-                            <td>{{item}}</td>
-                        {% endfor -%}
-                    </tr>
+                {% for row in table_products -%}
+                <tr>
+                    {% for item in row -%}
+                    <td>{{item}}</td>
+                    {% endfor -%}
+                </tr>
                 {% endfor -%}
             </tbody>
         </table>
-        <form action="/Execution_processes?operation=deleteOrUpdate" method="POST" class="action">
-            <p class="filling_input_0 last">
-                <input class="n_0" type="number" placeholder="execution process id" name="execution_process_id" readonly>
-                <select class="n_1" name="type_of_repair" title="type of repair">
-                    <option>Cosmetic</option>
-                    <option>Restoration repair</option>
-                    <option>Maintenance repair</option>
-                    <option>Major repair</option>
-                    <option>Planned repair</option>
-                </select>
-                <input class="n_2" type="number" placeholder="repair cost" name="repair_cost">
-                <label>order execution date:</label>
-                <input class="n_3" type="date" placeholder="order execution date" name="order_execution_date">
-                <label>message to the client:</label>
-                <select class="n_4" name="message_to_the_client" title="message to the client">
-                    <option>0</option>
-                    <option>1</option>
-                </select>
-                <input class="n_6" type="number" placeholder="payment amount" name="payment_amount" style="display: none;">
+        <form action="/Execution_processes?operation=show" method="POST">
+            <p class="upload_input_0" style="display: none;">
+                <input class="n_0" type="number" placeholder="product id" name="product_id" readonly>
             </p>
-            <p>
-                <label>date of product receipt:</label>
-                <input type="date" placeholder="date of product receipt" name="date_of_product_receipt">
-            </p>
-            <input class="product_id" type="number" value="{{product_id}}" name="product_id" style="display: none;">
-            <input type="submit" value="delete" name="delete">
-            <input type="submit" value="update" name="update">
+            <button type="submit" name="show">show execution processes</button>
         </form>
-    {% endif -%}
-    
-    <form action="/Execution_processes?operation=add" method="POST" class="action">
-        <p>
-            <select name="type_of_repair" title="type of repair">
-                <option>Cosmetic</option>
-                <option>Restoration repair</option>
-                <option>Maintenance repair</option>
-                <option>Major repair</option>
-                <option>Planned repair</option>
-            </select>
-            <input type="number" placeholder="repair cost" name="repair_cost">
-            <label>order execution date:</label>
-            <input type="date" placeholder="order execution date" name="order_execution_date">
-            <select name="message_to_the_client" title="message to the client" style="display: none;">
-                <option>0</option>
-                <option>1</option>
-            </select>
-            <input type="date" placeholder="date of product receipt" name="date_of_product_receipt" style="display: none;">
-            <input type="number" placeholder="payment amount" name="payment_amount" style="display: none;">
-            <table class="upload_1 order_table">
+        {% if table_execution != "" -%}
+            <table class="filling_0 execution_process">
                 <thead>
                     <tr>
-                        <th>order id</th>
-                        <th>client name</th>
-                        <th>client surname</th>
-                        <th>client patronymic</th>
-                        <th>warranty</th>
-                        <th>date of order receipt</th>
-                        <th>client phone number</th>
-                        <th>fk product id</th>
+                        <th>execution process id</th>
+                        <th>type of repair</th>
+                        <th>repair cost</th>
+                        <th>order execution date</th>
+                        <th>message to the client</th>
+                        <th>date of product receipt</th>
+                        <th>payment amount</th>
+                        <th>fk order id</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for row in table_orders -%}
-                    <tr>
-                        {% for item in row -%}
-                        <td>{{item}}</td>
-                        {% endfor -%}
-                    </tr>
+                    {% for row in table_execution -%}
+                        <tr>
+                            {% for item in row -%}
+                                <td>{{item}}</td>
+                            {% endfor -%}
+                        </tr>
                     {% endfor -%}
                 </tbody>
             </table>
-            <p class="upload_input_1" style="display: none;">
-                <input class="n_0" type="number" placeholder="fk order id" name="fk_order_id">
-            </p>
-        </p>
-        <input type="submit" value="add" name="add">
-    </form>
+            <fieldset class="action">
+                <legend>Delete and upload</legend>
+                <form action="/Execution_processes?operation=deleteOrUpdate" method="POST">
+                    <div>
+                        <p class="filling_input_0 last">
+                            <input class="n_0" type="number" placeholder="execution process id" name="execution_process_id" readonly>
+                            <select class="n_1" name="type_of_repair" title="type of repair">
+                                <option>Cosmetic</option>
+                                <option>Restoration repair</option>
+                                <option>Maintenance repair</option>
+                                <option>Major repair</option>
+                                <option>Planned repair</option>
+                            </select>
+                            <input class="n_2" type="number" placeholder="repair cost" name="repair_cost">
+                            <label>order execution date:</label>
+                            <input class="n_3" type="date" placeholder="order execution date" name="order_execution_date">
+                            <label>message to the client:</label>
+                            <select class="n_4" name="message_to_the_client" title="message to the client">
+                                <option>0</option>
+                                <option>1</option>
+                            </select>
+                            <input class="n_6" type="number" placeholder="payment amount" name="payment_amount" style="display: none;">
+                        </p>
+                    </div>
+                    <input class="product_id" type="number" value="{{product_id}}" name="product_id" style="display: none;">
+                    <input type="submit" value="delete" name="delete">
+                    <input type="submit" value="update" name="update">
+                    <p>
+                        <label>date of product receipt:</label>
+                        <input type="date" placeholder="date of product receipt" name="date_of_product_receipt">
+                    </p>
+                </form>
+            </fieldset>
+        {% endif -%}
+        <fieldset class="action">
+            <legend>Add</legend>
+            <form action="/Execution_processes?operation=add" method="POST">
+                    <select name="type_of_repair" title="type of repair">
+                        <option>Cosmetic</option>
+                        <option>Restoration repair</option>
+                        <option>Maintenance repair</option>
+                        <option>Major repair</option>
+                        <option>Planned repair</option>
+                    </select>
+                    <input type="number" placeholder="repair cost" name="repair_cost">
+                    <label>order execution date:</label>
+                    <input type="date" placeholder="order execution date" name="order_execution_date">
+                    <select name="message_to_the_client" title="message to the client" style="display: none;">
+                        <option>0</option>
+                        <option>1</option>
+                    </select>
+                    <input type="date" placeholder="date of product receipt" name="date_of_product_receipt" style="display: none;">
+                    <input type="number" placeholder="payment amount" name="payment_amount" style="display: none;">
+                    <table class="upload_1 order_table">
+                        <thead>
+                            <tr>
+                                <th>order id</th>
+                                <th>client name</th>
+                                <th>client surname</th>
+                                <th>client patronymic</th>
+                                <th>warranty</th>
+                                <th>date of order receipt</th>
+                                <th>client phone number</th>
+                                <th>fk product id</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in table_orders -%}
+                            <tr>
+                                {% for item in row -%}
+                                <td>{{item}}</td>
+                                {% endfor -%}
+                            </tr>
+                            {% endfor -%}
+                        </tbody>
+                    </table>
+                    <p class="upload_input_1" style="display: none;">
+                        <input class="n_0" type="number" placeholder="fk order id" name="fk_order_id">
+                    </p>
+                <input type="submit" value="add" name="add">
+            </form>
+        </fieldset>
+        <form action="/?operation=logout" method="POST"  class="logout">
+            <input type="submit" value="logout">
+        </form>
+    </div>
 {% endblock %}
 {% block footer %}
     {{super()}}

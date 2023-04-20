@@ -1,72 +1,87 @@
 {% extends "base.html" %}
 {% block header %}
+{{super()}}
 {% endblock %}
 {% block navigation %}
     {{super()}}
 {% endblock %}
 {% block content %}
-    <div class="message">
-        {% for msg in get_flashed_messages() -%}
-            {{msg}}
-        {% endfor -%}
-    </div>
-    <table class="filling_0">
-        <thead>
-            <tr>
-                <th>product id</th>
-                <th>product name</th>
-                <th>firm</th>
-                <th>model</th>
-                <th>technical specifications</th>
-                <th>warranty period</th>
-                <th>image</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in table -%}
-            <tr>
-                {% for item in row -%}
-                <td>{{item}}</td>
-                {% endfor -%}
-            </tr>
+    <div class="information_content">
+        <div class="message">
+            {% for msg in get_flashed_messages() -%}
+                {{msg}}
             {% endfor -%}
-        </tbody>
-    </table>
-    <form action="/Products?operation=deleteOrUpdate" method="POST" class="action">
-        <p class="filling_input_0 last">
-            <input class="n_0" type="number" placeholder="product id" name="product_id" readonly>
-            <input class="n_1" type="text" placeholder="product name" name="product_name">
-            <select class="n_2" name="firm" title="firm">
-                <option>Philips</option>
-                <option>Brown</option>
-                <option>Bosh</option>
-            </select>
-            <input class="n_3" type="text" placeholder="model" name="model">
-            <textarea class="n_4" placeholder="technical specifications" name="technical_specifications" rows="5" cols="33"></textarea>
-            <label for="warranty_period">warranty period:</label><input class="n_5" type="date" placeholder="warranty period" name="warranty_period">
-            <input class="n_6" type="text" placeholder="image" name="image">
-        </p>
-    <input type="submit" name="delete" value="delete">
-    <input type="submit" name="update" value="update">
-    </form>
-    <form action="/Products?operation=add" method="POST" class="action">
-        <p class="group_adding last">
-            <input type="text" placeholder="product name" name="product_name">
-            <!-- <input type="text" placeholder="firm" name="firm"> -->
-            <select name="firm" title="firm">
-                <option>Philips</option>
-                <option>Brown</option>
-                <option>Bosh</option>
-            </select>
-            <input type="text" placeholder="model" name="model">
-            <textarea placeholder="technical specifications" name="technical_specifications" rows="5" cols="33"></textarea>
-            <label>warranty period:</label>
-            <input type="date" placeholder="warranty period" name="warranty_period">
-            <input type="text" placeholder="image" name="image">
-        </p>
-        <input type="submit" name="add" value="add">
-    </form>
-
+        </div>
+        <table class="filling_0">
+            <thead>
+                <tr>
+                    <th>product id</th>
+                    <th>product name</th>
+                    <th>firm</th>
+                    <th>model</th>
+                    <th>technical specifications</th>
+                    <th>warranty period</th>
+                    <th>image</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table -%}
+                <tr>
+                    {% for item in row -%}
+                    <td>{{item}}</td>
+                    {% endfor -%}
+                </tr>
+                {% endfor -%}
+            </tbody>
+        </table>
+        <fieldset class="action">
+            <legend>Delete and upload</legend>
+            <form action="/Products?operation=deleteOrUpdate" method="POST">
+                <div>
+                    <p class="filling_input_0 last">
+                        <input class="n_0" type="number" placeholder="product id" name="product_id" readonly>
+                        <input class="n_1" type="text" placeholder="product name" name="product_name">
+                        <select class="n_2" name="firm" title="firm">
+                            <option>Philips</option>
+                            <option>Brown</option>
+                            <option>Bosh</option>
+                        </select>
+                        <input class="n_3" type="text" placeholder="model" name="model">
+                        <textarea class="n_4" placeholder="technical specifications" name="technical_specifications" rows="5" cols="40"></textarea>
+                        <label for="warranty_period">warranty period:</label><input class="n_5" type="date" placeholder="warranty period" name="warranty_period">
+                        <input class="n_6" type="text" placeholder="image" name="image">
+                    </p>
+                </div>
+                    <input type="submit" name="delete" value="delete">
+                    <input type="submit" name="update" value="update">
+            </form>
+        </fieldset>
+        <fieldset class="action">
+            <legend>Add</legend>
+            <form action="/Products?operation=add" method="POST">
+                <div>
+                    <p class="group_adding last">
+                        <input type="text" placeholder="product name" name="product_name">
+                        <!-- <input type="text" placeholder="firm" name="firm"> -->
+                        <select name="firm" title="firm">
+                            <option>Philips</option>
+                            <option>Brown</option>
+                            <option>Bosh</option>
+                        </select>
+                        <input type="text" placeholder="model" name="model">
+                        <textarea placeholder="technical specifications" name="technical_specifications"  rows="5" cols="40"></textarea>
+                        <label>warranty period:</label>
+                        <input type="date" placeholder="warranty period" name="warranty_period">
+                        <input type="text" placeholder="image" name="image">
+                    </p>
+                </div>
+                <input type="submit" name="add" value="add">
+            </form>
+        </fieldset>
+        <form action="/?operation=logout" method="POST"  class="logout">
+            <input type="submit" value="logout">
+        </form>
+    </div>
 {% endblock %}
 {% block footer %}
     {{super()}}
