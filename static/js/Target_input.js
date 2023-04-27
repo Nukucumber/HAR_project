@@ -70,99 +70,102 @@ function filling_execution(target, i){
     var id_array = []
     
     var target_input = document.querySelector(".filling_input_" + i + ".last")
-    var tags_name = []
-    var children_input = target_input.children
-    for (let children_index = 0; children_index < children_input.length; children_index++) {
-        tags_name.push(children_input[children_index].name)
-    }
+    if (target_input != undefined) {
+        
+        var tags_name = []
+        var children_input = target_input.children
+        for (let children_index = 0; children_index < children_input.length; children_index++) {
+            tags_name.push(children_input[children_index].name)
+        }
+        
+        namedTagsForCount(".filling_input_" + i, tags_name)
     
-    namedTagsForCount(".filling_input_" + i, tags_name)
-
-    for (let tr_index = 0; tr_index < tr.length; tr_index++) {
-        tr[tr_index].addEventListener("click", function(){
-            target_input = document.querySelector(".filling_input_" + i + ".last")
-
-            if (target_input != null) {
-                
-
-                var td = tr[tr_index].querySelectorAll("td")
-
-
-                if (id_array.includes(td[0].innerHTML) == false) {
+        for (let tr_index = 0; tr_index < tr.length; tr_index++) {
+            tr[tr_index].addEventListener("click", function(){
+                target_input = document.querySelector(".filling_input_" + i + ".last")
+    
+                if (target_input != null) {
                     
-                    if (target_input.classList.contains("filled") == false) {
+    
+                    var td = tr[tr_index].querySelectorAll("td")
+    
+    
+                    if (id_array.includes(td[0].innerHTML) == false) {
                         
-                        for (let td_index = 0; td_index < td.length; td_index++) {
-                        
-                            if (target_input.querySelector(".n_" + td_index) != null) {
-                                if (td[td_index].querySelector("img") != undefined) {
+                        if (target_input.classList.contains("filled") == false) {
+                            
+                            for (let td_index = 0; td_index < td.length; td_index++) {
+                            
+                                if (target_input.querySelector(".n_" + td_index) != null) {
+                                    if (td[td_index].querySelector("img") != undefined) {
+                                        
+                                        target_input.querySelector(".n_" + td_index).value = td[td_index].querySelector("img").src
+                                    }
+                                    else{
+                                        target_input.querySelector(".n_" + td_index).value = td[td_index].innerHTML
+                                    }
+                                }                
+                            }
+        
+                            id_array.push(td[0].innerHTML)
+                            tr[tr_index].classList.add("active")
+                            target_input.classList.add("filled")
+                        }
+                        else{
+                            target_input.classList.remove("last")
+                            target_input.insertAdjacentHTML('afterEnd', '<p class="filling_input_' + i + ' last">' + target_input.innerHTML +'</p>')
+                            target_input = document.querySelector(".filling_input_" + i + ".last")
+    
+                            for (let td_index = 0; td_index < td.length; td_index++) {
+                            
+                                if (target_input.querySelector(".n_" + td_index) != null) {
                                     
-                                    target_input.querySelector(".n_" + td_index).value = td[td_index].querySelector("img").src
+                                    if (td[td_index].querySelector("img") != undefined) {
+                                        
+                                        target_input.querySelector(".n_" + td_index).value = td[td_index].querySelector("img").src
+                                    }
+                                    else{
+                                        target_input.querySelector(".n_" + td_index).value = td[td_index].innerHTML
+                                    }
+                                }                
+                            }
+        
+                            id_array.push(td[0].innerHTML)
+                            tr[tr_index].classList.add("active")
+                            target_input.classList.add("filled")
+                        }
+                    }
+                    else {
+                        var field = document.querySelectorAll(".filling_input_" + i + ".filled")
+    
+                        for (let field_index = 0; field_index < field.length; field_index++) {
+                            
+                            if (field[field_index].querySelector(".n_0").value == td[0].innerHTML) {
+    
+                                if (field[field_index - 1] != undefined || field[field_index + 1] != undefined) {
+                                    if (field[field_index].classList.contains("last") == true) {
+                                        field[field_index - 1].classList.add("last")
+                                    }
+                                    field[field_index].remove(field[field_index])
                                 }
                                 else{
-                                    target_input.querySelector(".n_" + td_index).value = td[td_index].innerHTML
+                                    var children = field[field_index].children
+                                    for (let children_index = 0; children_index < children.length; children_index++) {
+                                        children[children_index].value = ""
+                                    }
+                                    field[field_index].classList.remove("filled")
                                 }
-                            }                
-                        }
     
-                        id_array.push(td[0].innerHTML)
-                        tr[tr_index].classList.add("active")
-                        target_input.classList.add("filled")
-                    }
-                    else{
-                        target_input.classList.remove("last")
-                        target_input.insertAdjacentHTML('afterEnd', '<p class="filling_input_' + i + ' last">' + target_input.innerHTML +'</p>')
-                        target_input = document.querySelector(".filling_input_" + i + ".last")
-
-                        for (let td_index = 0; td_index < td.length; td_index++) {
-                        
-                            if (target_input.querySelector(".n_" + td_index) != null) {
-                                
-                                if (td[td_index].querySelector("img") != undefined) {
-                                    
-                                    target_input.querySelector(".n_" + td_index).value = td[td_index].querySelector("img").src
-                                }
-                                else{
-                                    target_input.querySelector(".n_" + td_index).value = td[td_index].innerHTML
-                                }
-                            }                
-                        }
-    
-                        id_array.push(td[0].innerHTML)
-                        tr[tr_index].classList.add("active")
-                        target_input.classList.add("filled")
-                    }
-                }
-                else {
-                    var field = document.querySelectorAll(".filling_input_" + i + ".filled")
-
-                    for (let field_index = 0; field_index < field.length; field_index++) {
-                        
-                        if (field[field_index].querySelector(".n_0").value == td[0].innerHTML) {
-
-                            if (field[field_index - 1] != undefined || field[field_index + 1] != undefined) {
-                                if (field[field_index].classList.contains("last") == true) {
-                                    field[field_index - 1].classList.add("last")
-                                }
-                                field[field_index].remove(field[field_index])
+                                let id_index = id_array.indexOf(td[0].innerHTML)
+                                id_array.splice(id_index, 1)
+                                tr[tr_index].classList.remove("active")
                             }
-                            else{
-                                var children = field[field_index].children
-                                for (let children_index = 0; children_index < children.length; children_index++) {
-                                    children[children_index].value = ""
-                                }
-                                field[field_index].classList.remove("filled")
-                            }
-
-                            let id_index = id_array.indexOf(td[0].innerHTML)
-                            id_array.splice(id_index, 1)
-                            tr[tr_index].classList.remove("active")
                         }
                     }
                 }
-            }
-            namedTagsForCount(".filling_input_" + i, tags_name)
-        })
+                namedTagsForCount(".filling_input_" + i, tags_name)
+            })
+        }
     }
 }
 

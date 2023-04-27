@@ -16,13 +16,23 @@
         <div class="main_content">
             {% block navigation -%}
                 <nav>
-                    <ul>
-                        <li><a class="Products" href="{{url_for('Products')}}">Products</a></li>
-                        <li><a class="Orders" href="{{url_for('Orders')}}">Orders</a></li>
-                        <li><a class="Main_report" href="{{url_for('index')}}">Main report</a></li>
-                        <li><a class="Staff" href="{{url_for('Staff')}}">Staff</a></li>
-                        <!-- <li><a class="staff_id_orders_id" href="{{url_for('staff_id_orders_id')}}">staff_id orders_id</a></li> -->
-                    </ul>
+                    {% if user == "admin" -%}
+                        <ul>
+                            <li><a class="Products" href="{{url_for('Products')}}">Products</a></li>
+                            <li><a class="Orders" href="{{url_for('Orders')}}">Orders</a></li>
+                            <li><a class="Main_report" href="{{url_for('index')}}">Main report</a></li>
+                            <li><a class="Staff" href="{{url_for('Staff')}}">Staff</a></li>
+                            <li><a class="Execution_processes" href="{{url_for('Execution_processes')}}">Execution processes</a></li>
+                            <!-- <li><a class="staff_id_orders_id" href="{{url_for('staff_id_orders_id')}}">staff_id orders_id</a></li> -->
+                        </ul>
+                    {% endif -%}
+                    {% if user == "manager" -%}
+                        <ul>
+                            <li><a class="Products" href="{{url_for('Products')}}">Products</a></li>
+                            <li><a class="Orders" href="{{url_for('Orders')}}">Orders</a></li>
+                            <!-- <li><a class="staff_id_orders_id" href="{{url_for('staff_id_orders_id')}}">staff_id orders_id</a></li> -->
+                        </ul>
+                    {% endif -%}
                 </nav>
             {% endblock -%}
             {% block content -%}
@@ -30,7 +40,10 @@
             {% block footer -%}
             <script>
                 var title = document.title.split(" ").join("_")
-                document.querySelector("nav a." + title).classList.add("activePage")
+                var page = document.querySelector("nav a." + title)
+                if (page != undefined){
+                    page.classList.add("activePage")
+                }
             </script>
             <script type="module" src="{{ url_for('static', filename='js/CreateImg.js')}}"></script>
             <script type="module" src="{{ url_for('static', filename='js/DateCheck.js')}}"></script>

@@ -422,3 +422,10 @@ def checkLogin(Nickname, psw):
     if list(dataUsers[0])[1] != Nickname or check_password_hash(list(dataUsers[0])[2], psw) == False:
         return False
     return True
+
+con = sqlite3.connect("DB/HAR_DB.db")
+c = con.cursor()
+c.execute("UPDATE Users SET Nickname = 'engineer', password = '" + generate_password_hash("engineer_psw") + "' WHERE Nickname = 'employee'")
+con.commit()
+c.close()
+con.close()

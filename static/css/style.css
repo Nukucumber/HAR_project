@@ -118,15 +118,6 @@ nav{
     width: 60em;
 }
 
-nav.forEmpl{
-    width: 20em;
-    background-color: #3d392f;
-    border-radius: 20px;
-    font-size: 2em;
-    color: #d3c59f;
-    text-align: center;
-}
-
 nav > ul{
     display: flex;
     flex-wrap: wrap;
@@ -235,6 +226,12 @@ table tbody tr:hover{
         min-width: 100%;
         font-size: 0.8em;
         padding: 0;
+    }
+
+    
+
+    div.main_content, div.information_content, div.logo, nav{
+        width: 100%;
     }
 
     nav > ul{
