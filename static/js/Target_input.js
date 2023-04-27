@@ -87,6 +87,7 @@ function filling_execution(target, i){
 
                 var td = tr[tr_index].querySelectorAll("td")
 
+
                 if (id_array.includes(td[0].innerHTML) == false) {
                     
                     if (target_input.classList.contains("filled") == false) {
@@ -94,7 +95,13 @@ function filling_execution(target, i){
                         for (let td_index = 0; td_index < td.length; td_index++) {
                         
                             if (target_input.querySelector(".n_" + td_index) != null) {
-                                target_input.querySelector(".n_" + td_index).value = td[td_index].innerHTML
+                                if (td[td_index].querySelector("img") != undefined) {
+                                    
+                                    target_input.querySelector(".n_" + td_index).value = td[td_index].querySelector("img").src
+                                }
+                                else{
+                                    target_input.querySelector(".n_" + td_index).value = td[td_index].innerHTML
+                                }
                             }                
                         }
     
@@ -110,7 +117,14 @@ function filling_execution(target, i){
                         for (let td_index = 0; td_index < td.length; td_index++) {
                         
                             if (target_input.querySelector(".n_" + td_index) != null) {
-                                target_input.querySelector(".n_" + td_index).value = td[td_index].innerHTML
+                                
+                                if (td[td_index].querySelector("img") != undefined) {
+                                    
+                                    target_input.querySelector(".n_" + td_index).value = td[td_index].querySelector("img").src
+                                }
+                                else{
+                                    target_input.querySelector(".n_" + td_index).value = td[td_index].innerHTML
+                                }
                             }                
                         }
     

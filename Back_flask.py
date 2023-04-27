@@ -8,13 +8,16 @@ app.secret_key = str(uuid.uuid4().fields[-1])
 @app.route("/login", methods = {"POST", "GET"})
 def login():
     if "Logged" in session:
-        return redirect(url_for("index"))
+        if session["Logged"] == "manager":
+            return redirect(url_for("index"))
+        if session["Logged"] == "employee":
+            return redirect(url_for("Execution_processes"))
     if request.method == "POST":
         if repos.checkLogin(request.form.to_dict()["Nickname"], request.form.to_dict()["psw"]) == False:
             flash("Wrong password or nickname")
         else:
-            session["Logged"] = True
-        return redirect(url_for("index"))
+            session["Logged"] = request.form.to_dict()["Nickname"]
+        return redirect(url_for("login"))
         
     return render_template("login.html", title = "login")
 
@@ -22,9 +25,9 @@ def login():
 
 @app.route("/", methods = ["POST", "GET"])
 def index():
-    if "Logged" not in session:
+    if "Logged" not in session or session["Logged"] != "manager":
         return redirect(url_for("login"))
-    
+        
     if request.method == "POST":
         if request.args.get("operation") == "search":
             session["date"] = request.form.to_dict()
@@ -32,7 +35,6 @@ def index():
         if request.args.get("operation") == "logout":
             session.pop("Logged")
             return redirect(url_for("login"))
-
 
     if "date" in session:
         return render_template("index.html", title = "Main report", table = repos.search_task(session["date"]), input_date = session["date"]["date"])
@@ -42,7 +44,7 @@ def index():
 
 @app.route("/Products", methods = ["POST", "GET"])
 def Products():
-    if "Logged" not in session:
+    if "Logged" not in session or session["Logged"] != "manager":
         return redirect(url_for("login"))
     
     if request.method == "POST":
@@ -63,7 +65,7 @@ def Products():
 
 @app.route("/Staff", methods = ["POST", "GET"])
 def Staff():
-    if "Logged" not in session:
+    if "Logged" not in session or session["Logged"] != "manager":
         return redirect(url_for("login"))
 
     if request.method == "POST":
@@ -81,7 +83,7 @@ def Staff():
 
 @app.route("/Orders", methods = ["POST", "GET"])
 def Orders():
-    if "Logged" not in session:
+    if "Logged" not in session or session["Logged"] != "manager":
         return redirect(url_for("login"))
     if request.method == "POST":
         if request.args.get("operation") == "logout":
@@ -100,7 +102,7 @@ def Orders():
 
 @app.route("/Execution_processes", methods = ["POST", "GET"])
 def Execution_processes():
-    if "Logged" not in session:
+    if "Logged" not in session or session["Logged"] != "employee":
         return redirect(url_for("login"))
 
     if request.method == "POST":
@@ -124,7 +126,7 @@ def Execution_processes():
     
 @app.route("/staff_id_orders_id")
 def staff_id_orders_id():
-    if "Logged" not in session:
+    if "Logged" not in session or session["Logged"] != "manager":
         return redirect(url_for("login"))
     
     return render_template("staff_id_orders_id.html", title = "staff_id orders_id", table = repos.staff_id_orders_id_showAll())

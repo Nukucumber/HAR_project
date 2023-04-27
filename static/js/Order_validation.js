@@ -30,7 +30,7 @@ function validation(form){
         }
         
         if (input[input_index].name.indexOf("client_name") > -1) {
-            if (/^[A-Z][a-z]{3,15}$/.test(input[input_index].value) == false) {
+            if (/^[A-ZА-ЯЁ][a-zа-яё]{1,15}$/.test(input[input_index].value) == false) {
                 input[input_index].classList.add("wrongInput")
                 document.querySelector(".message").innerHTML = "Incorrect format of the client name field"
                 return false
@@ -38,7 +38,7 @@ function validation(form){
         }
 
         if (input[input_index].name.indexOf("client_surname") > -1) {
-            if (/^[A-Z][a-z]{3,25}$/.test(input[input_index].value) == false) {
+            if (/^[A-ZА-ЯЁ][a-zа-яё]{1,45}$/.test(input[input_index].value) == false) {
                 input[input_index].classList.add("wrongInput")
                 document.querySelector(".message").innerHTML = "Incorrect format of the client surname field"
                 return false
@@ -46,7 +46,7 @@ function validation(form){
         }
 
         if (input[input_index].name.indexOf("client_patronymic") > -1) {
-            if (input[input_index].value != "" && /^[A-Z][a-z]{3,25}$/.test(input[input_index].value) == false) {
+            if (input[input_index].value != "" && /^[A-ZА-Яё][a-zа-яё]{1,45}$/.test(input[input_index].value) == false) {
                 input[input_index].classList.add("wrongInput")
                 document.querySelector(".message").innerHTML = "Incorrect format of the client patronymic field"
                 return false
@@ -112,7 +112,7 @@ function checkEmployeeField(input){
     for (let input_index = 0; input_index < input.length; input_index++) {
 
         if (input[input_index].name.indexOf("new_employee_name") > -1) {
-            if (/^[A-Z][a-z]{3,15}$/.test(input[input_index].value) == false) {
+            if (/^[A-ZА-ЯЁ][a-zа-яё]{1,15}$/.test(input[input_index].value) == false) {
                 input[input_index].classList.add("wrongInput")
                 document.querySelector(".message").innerHTML = "Incorrect format of the employee name field"
                 return false
@@ -120,7 +120,7 @@ function checkEmployeeField(input){
         }
 
         if (input[input_index].name.indexOf("new_employee_surname") > -1) {
-            if (/^[A-Z][a-z]{3,25}$/.test(input[input_index].value) == false) {
+            if (/^[A-ZА-ЯЁ][a-zа-яё]{1,45}$/.test(input[input_index].value) == false) {
                 input[input_index].classList.add("wrongInput")
                 document.querySelector(".message").innerHTML = "Incorrect format of the employee surname field"
                 return false
@@ -128,7 +128,7 @@ function checkEmployeeField(input){
         }
 
         if (input[input_index].name.indexOf("new_employee_patronymic") > -1) {
-            if (input[input_index].value != "" && /^[A-Z][a-z]{3,25}$/.test(input[input_index].value) == false) {
+            if (input[input_index].value != "" && /^[A-ZА-ЯЁ][a-zа-яё]{1,45}$/.test(input[input_index].value) == false) {
                 input[input_index].classList.add("wrongInput")
                 document.querySelector(".message").innerHTML = "Incorrect format of the employee patronymic field"
                 return false
@@ -136,7 +136,7 @@ function checkEmployeeField(input){
         }
 
         if (input[input_index].name.indexOf("new_employee_position") > -1) {
-            if (/^[A-Z][a-z]{3,25}$/.test(input[input_index].value) == false) {
+            if (/^[A-ZА-ЯЁ]{3,45}$/i.test(input[input_index].value) == false) {
                 input[input_index].classList.add("wrongInput")
                 document.querySelector(".message").innerHTML = "Incorrect format of the employee position field"
                 return false

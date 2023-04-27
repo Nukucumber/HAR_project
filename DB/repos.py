@@ -414,9 +414,11 @@ def staff_id_orders_id_showAll():
 def checkLogin(Nickname, psw):
     con = sqlite3.connect("DB/HAR_DB.db")
     c = con.cursor()
-    dataUsers = c.execute("SELECT * FROM Users").fetchall()[0]
+    dataUsers = c.execute("SELECT * FROM Users WHERE Nickname = '" + Nickname +"'").fetchall()
     c.close()
     con.close()
-    if list(dataUsers)[1] != Nickname or check_password_hash(list(dataUsers)[2], psw) == False:
+    if dataUsers == []:
+        return False
+    if list(dataUsers[0])[1] != Nickname or check_password_hash(list(dataUsers[0])[2], psw) == False:
         return False
     return True

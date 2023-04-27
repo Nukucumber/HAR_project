@@ -16,7 +16,7 @@ function validation(form){
         }
 
         if (input[input_index].name.indexOf("product_name") > -1) {
-            if (/^[A-Z]{3,10}[A-Z0-9 ]*$/i.test(input[input_index].value) == false) {
+            if (/^[A-Z А-Я0-9]{3,40}$/i.test(input[input_index].value) == false) {
                 input[input_index].classList.add("wrongInput")
                 document.querySelector(".message").innerHTML = "Incorrect format of the product name field"
                 return false
@@ -24,7 +24,7 @@ function validation(form){
         }
 
         if (input[input_index].name.indexOf("model") > -1) {
-            if (/^[A-Z]+[A-Z0-9_]+[A-Z0-9]+$/i.test(input[input_index].value) == false) {
+            if (/^[A-Z0-9 _/\-]{3,40}$/i.test(input[input_index].value) == false) {
                 input[input_index].classList.add("wrongInput")
                 document.querySelector(".message").innerHTML = "Incorrect format of the model field"
                 return false
@@ -37,7 +37,27 @@ function validation(form){
                 input[input_index].value = ""
             }
         }
+
+        if (input[input_index].name.indexOf("image") > -1) {
+            if (input[input_index].value != "" && /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?$/i.test(input[input_index].value) == false) {
+                input[input_index].classList.add("wrongInput")
+                document.querySelector(".message").innerHTML = "Incorrect format of the image field"
+                return false
+            }
+        }
     }
+
+    var textarea = form.querySelectorAll("textarea")
+
+    for (let textarea_index = 0; textarea_index < textarea.length; textarea_index++) {
+        if (textarea[textarea_index].value != "" && /^[A-ZА-ЯЁ0-9_/:,.;\-\n ]{3,400}$/i.test(textarea[textarea_index].value) == false) {
+            textarea[textarea_index].classList.add("wrongInput")
+            document.querySelector(".message").innerHTML = "Incorrect format of the technical specifications field"
+            return false
+        }
+        
+    }
+
     return true
 }
 

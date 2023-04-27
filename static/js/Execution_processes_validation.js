@@ -63,6 +63,14 @@ function validation(form){
             }
         }
 
+        if(/^order_execution_date_/.test(input[input_index].name) == true){
+            if (input[input_index].value == "") {
+                input[input_index].classList.add("wrongInput")
+                document.querySelector(".message").innerHTML = "Incorrect format of the order execution date field"
+                return false
+            }
+        }
+
         if (input[input_index].name.indexOf("date_of_product_receipt") > -1) {
             if (input[input_index].value != "") {
                 if (isCorrectDate(input[input_index].value) == false) {
