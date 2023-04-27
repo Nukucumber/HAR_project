@@ -25,7 +25,10 @@ def login():
 
 @app.route("/", methods = ["POST", "GET"])
 def index():
-    if "Logged" not in session or session["Logged"] != "manager":
+    if "Logged" not in session:
+        return redirect(url_for("login"))
+    if session["Logged"] != "manager":
+        session.pop("Logged")
         return redirect(url_for("login"))
         
     if request.method == "POST":
@@ -44,7 +47,10 @@ def index():
 
 @app.route("/Products", methods = ["POST", "GET"])
 def Products():
-    if "Logged" not in session or session["Logged"] != "manager":
+    if "Logged" not in session:
+        return redirect(url_for("login"))
+    if session["Logged"] != "manager":
+        session.pop("Logged")
         return redirect(url_for("login"))
     
     if request.method == "POST":
@@ -65,7 +71,10 @@ def Products():
 
 @app.route("/Staff", methods = ["POST", "GET"])
 def Staff():
-    if "Logged" not in session or session["Logged"] != "manager":
+    if "Logged" not in session:
+        return redirect(url_for("login"))
+    if session["Logged"] != "manager":
+        session.pop("Logged")
         return redirect(url_for("login"))
 
     if request.method == "POST":
@@ -83,8 +92,12 @@ def Staff():
 
 @app.route("/Orders", methods = ["POST", "GET"])
 def Orders():
-    if "Logged" not in session or session["Logged"] != "manager":
+    if "Logged" not in session:
         return redirect(url_for("login"))
+    if session["Logged"] != "manager":
+        session.pop("Logged")
+        return redirect(url_for("login"))
+    
     if request.method == "POST":
         if request.args.get("operation") == "logout":
             session.pop("Logged")
@@ -102,7 +115,10 @@ def Orders():
 
 @app.route("/Execution_processes", methods = ["POST", "GET"])
 def Execution_processes():
-    if "Logged" not in session or session["Logged"] != "employee":
+    if "Logged" not in session:
+        return redirect(url_for("login"))
+    if session["Logged"] != "employee":
+        session.pop("Logged")
         return redirect(url_for("login"))
 
     if request.method == "POST":
@@ -126,7 +142,10 @@ def Execution_processes():
     
 @app.route("/staff_id_orders_id")
 def staff_id_orders_id():
-    if "Logged" not in session or session["Logged"] != "manager":
+    if "Logged" not in session:
+        return redirect(url_for("login"))
+    if session["Logged"] != "manager":
+        session.pop("Logged")
         return redirect(url_for("login"))
     
     return render_template("staff_id_orders_id.html", title = "staff_id orders_id", table = repos.staff_id_orders_id_showAll())
